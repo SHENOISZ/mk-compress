@@ -1,7 +1,7 @@
 /*
 *@AUTHOR SHENOISZ
 */
-#include <iostream>
+
 namespace std
 {
 namespace shenoisz
@@ -107,7 +107,7 @@ protected:
                 }
             }
         }
-        cout << texto << endl;
+
         return texto;
     }
 
