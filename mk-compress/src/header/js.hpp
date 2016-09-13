@@ -1,7 +1,6 @@
 /*
 *@AUTHOR SHENOISZ
 */
-
 namespace std
 {
 namespace shenoisz
@@ -49,9 +48,9 @@ protected:
     string filter(string texto)
     {
 
-        // strings of scape
-        string start[] = {"/*", "=\"", "= \"", "='", "= '", "(\"", "('", "NULL"};
-        string ended[] = {"*/", "\"", "\"", "'", "'", "\")", "')", "NULL"};
+        // strings of scape static
+        string start[] = {"/*", "=\"", "= \"", "(\"", "NULL"};
+        string ended[] = {"*/", "\"", "\"", "\")", "NULL"};
 
         for (int i = 0; i <= str.len(start); i++)
         {
@@ -60,7 +59,6 @@ protected:
         }
 
         texto = rmcomments(texto);
-        texto = str.removeAll("\n", texto);
 
         texto = inLine(texto);
 
@@ -159,36 +157,14 @@ protected:
 
         for (int i = 0; i < size; i++)
         {
-            texto = str.replace(key + String::toString(i) + key_, subfilter(matrix[id][i]), texto);
+            texto = str.replace(key + String::toString(i) + key_, matrix[id][i], texto);
         }
 
         return texto;
     }
 
-    string subfilter(string texto)
+    string spider(string texto)
     {
-        string tests[] = {"= \"", "= '", "NULL"};
-        string start[] = {"=", "=", "NULL"};
-        string end[] = {"\"", "'", "NULL"};
-
-        string content;
-        string* fatias;
-        int size;
-
-        for (int i = 0; i <= str.len(start); i++)
-        {
-            if(str.exists(tests[i], texto))
-            {
-                fatias = str.split(start[i], texto);
-                size = str.len(fatias);
-
-                content = start[i] + str.split(end[i], fatias[1])[0] + end[i];
-                texto = str.replace(content, "{{}}", texto);
-                content = str.removeAll(" ", content);
-                texto = str.replace("{{}}", content, texto);
-            }
-        }
-
         return texto;
     }
 
