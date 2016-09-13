@@ -1,6 +1,7 @@
 /*
 *@AUTHOR SHENOISZ
 */
+#include <iostream>
 namespace std
 {
 namespace shenoisz
@@ -47,8 +48,6 @@ protected:
 
     string filter(string texto)
     {
-        texto = rmcomments(texto);
-        texto = str.removeAll("\n", texto);
 
         // strings of scape
         string start[] = {"/*", "=\"", "= \"", "='", "= '", "(\"", "('", "NULL"};
@@ -59,6 +58,9 @@ protected:
             string t = str.toString(i);
             texto = tags(i, start[i], ended[i], "{" + t + "{", "}"+ t +"}", texto);
         }
+
+        texto = rmcomments(texto);
+        texto = str.removeAll("\n", texto);
 
         texto = inLine(texto);
 
@@ -105,7 +107,7 @@ protected:
                 }
             }
         }
-
+        cout << texto << endl;
         return texto;
     }
 
@@ -113,7 +115,6 @@ protected:
     {
         string regex[] = {"\n", " \n", "\n ", "\r\n", "\n\r", "\t", "    ", "  ","NULL"};
         texto = str.ex_removeAll(regex, texto);
-
         return texto;
     }
 
@@ -201,7 +202,8 @@ protected:
 
             if (str.exists("//", temp))
             {
-                texto = str.remove(parts[i], texto);
+                string remover = str.substr(str.find("//", parts[i])->index(), temp.length(), parts[i]);
+                texto = str.remove(remover, texto);
             }
         }
         return texto;
