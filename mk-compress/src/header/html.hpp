@@ -27,8 +27,8 @@ class Html : public Css, public Js
     string htmlMinify(string texto)
     {
         // tags and atributes for scape
-        string attr_start[] = {"<!--", "<style>", "style=\"", "style=\'", "<script", "<pre>", "href=\"", "href =\"", "href= \"", "href = \"", "src=\"", "src =\"", "src= \"", "src = \"", "data-src=\"", "data-src =\"", "data-src= \"", "data-src = \"", "href=\'", "href =\'", "href= \'", "href = \'", "src=\'", "src =\'", "src= \'", "src = \'", "data-src=\'", "data-src =\'", "data-src= \'", "data-src = \'", "NULL"};
-        string attr_end[] = {"-->", "</style>", "\"", "\'", "</script>", "</pre>", "\"", "\"", "\"", "\"", "\"", "\"", "\"", "\"", "\"", "\"", "\"", "\"", "\'", "\'", "\'", "\'", "\'", "\'", "\'", "\'", "\'", "\'", "\'", "\'", "NULL"};
+        string attr_start[] = {"<!--", "<style>", "style=\"", "style=\'", "<script", "<pre>", "= \"", " =\"", " = \"", "= '", " ='", " = '", "NULL"};
+        string attr_end[] = {"-->", "</style>", "\"", "\'", "</script>", "</pre>", "\"", "\"", "\"", "'", "'", "'", "NULL"};
 
         for (int i = 0; i <= String::len(attr_start); i++)
         {
