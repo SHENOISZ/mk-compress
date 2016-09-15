@@ -1,9 +1,11 @@
 /*
 *@AUTHOR SHENOISZ
 */
+
 #include "../libs/stringer.hpp"
 #include "css.hpp"
 #include "js.hpp"
+
 namespace std
 {
 namespace shenoisz
@@ -119,9 +121,13 @@ class Html : public Css, public Js
 
     string inLine(string texto)
     {
-        string regex[] = {"\n", "\r\n", "\n\r", "\t", "   ", "  ","NULL"};
-        texto = str.ex_removeAll(regex, texto);
-
+        texto = str.removeAll('\n', texto);
+        texto = str.removeAll("\n\r", texto);
+        texto = str.removeAll("\r\n", texto);
+        texto = str.removeAll('\t', texto);
+        texto = str.removeAll("    ", texto);
+        texto = str.removeAll("  ", texto);
+        texto = str.removeAll("  ", texto);
         return texto;
     }
 

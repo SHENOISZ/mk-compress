@@ -1,6 +1,7 @@
 /*
 *@AUTHOR SHENOISZ
 */
+
 namespace std
 {
 namespace shenoisz
@@ -42,38 +43,22 @@ protected:
 
  private:
 
-    string* matrix[10];
-    bool exist[10];
+    string* matrix[1];
 
     string filter(string texto)
     {
-
-        // strings of scape static
-        string start[] = {"/*", "=\"", "= \"", "(\"", "NULL"};
-        string ended[] = {"*/", "\"", "\"", "\")", "NULL"};
-
-        for (int i = 0; i <= str.len(start); i++)
-        {
-            string t = str.toString(i);
-            texto = tags(i, start[i], ended[i], "{" + t + "{", "}"+ t +"}", texto);
-        }
-
+        // remove comments of one line
         texto = rmcomments(texto);
-
+        // remove comments of very line
+        texto = rm_mult_comments(texto);
+        // save the strings of the file
+        texto = mapper(0, texto);
+        // remove spaces and line break
         texto = inLine(texto);
 
-        // remove comments of very lines
-        if (exist[0])
-        {
-            texto = delete_tags(0, "{0{", "}0}", texto);
-            matrix[0] = NULL;
-        }
-
-        texto = inLine(texto);
-
-        // final verify
-        string atual[] = {" function", "{\n", ") {", " (", "( ", ") ", " )", " {", "} ", "{ ", " }", "; ", " ;", " ; ", "; ", ": ", " :", " : ", ", ", " ,", " , ", " ?", "? ", " ? ", " <", "< ", " < ", "> ", " >", " > ", " =", "= ", " = ", "! ", " !", " ! ", " || ", "|| ", " ||", " && ", "&& ", " &&", "NULL"};
-        string novas[] = {"function", "{", "){", "(", "(", ")", ")", "{", "}", "{", "}", ";", ";", ";", ";", ":", ":", ":", ",", ",", ",", "?", "?", "?", "<", "<", "<", ">",  ">", ">", "=", "=", "=", "!", "!", "!", " || ", "||", "||", "&&", "&&", "&&", "NULL"};
+        // lines final verify
+        string atual[] = {" function", "{\n","{ ", " {", "; {", ") {", " (", "( ", ") ", " )", " {", "} ", "{ ", " }", "; ", " ;", " ; ", "; ", ": ", " :", " : ", ", ", " ,", " , ", " ?", "? ", " ? ", " <", "< ", " < ", "> ", " >", " > ", " =", "= "," = ", "! ", " !", " ! ", " || ", "|| ", " ||", " && ", "&& ", " &&", "NULL"};
+        string novas[] = {"function", "{", "{", "{", ";{", "){", "(", "(", ")", ")", "{", "}", "{", "}", ";", ";", ";", ";", ":", ":", ":", ",", ",", ",", "?", "?", "?", "<", "<", "<", ">",  ">", ">", "=", "=", "=", "!", "!", "!", " || ", "||", "||", "&&", "&&", "&&", "NULL"};
 
         for (int i = 0; i <= str.len(atual); i++)
         {
@@ -83,88 +68,120 @@ protected:
             }
         }
 
-        texto = inLine(texto);
-
-        // add back scape
-        for (int i = 0; i <= str.len(start); i++)
-        {
-            if (exist[i])
-            {
-                string t = str.toString(i);
-
-                if (str.exists(" {" + t + "{" + t + "}" + t + "} ", texto))
-                {
-                    texto = str.replace(" {" + t + "{" + t + "}" + t + "} ", "{" + t + "{" + t + "}" + t + "}", texto);
-                }
-
-                if (i > 1)
-                {
-                    texto = add_tags(i, "{" + t + "{", "}" + t + "}", texto);
-
-                    matrix[i] = NULL;
-                }
-            }
-        }
+        // add strings again in file
+        texto = add_tags(0, "{s{", "}s}", texto);
 
         return texto;
     }
 
     string inLine(string texto)
     {
-        string regex[] = {"\n", " \n", "\n ", "\r\n", "\n\r", "\t", "    ", "  ","NULL"};
-        texto = str.ex_removeAll(regex, texto);
-        return texto;
-    }
-
-    string tags(int id, string start, string end, string key, string key_, string texto)
-    {
-        // test tags exists
-        if (str.exists(start,  texto))
-        {
-            string* fatias = str.split(start, texto);
-            int size = str.len(fatias), get = 1;
-            string *content = new string[size + 2];
-
-            for (int i = 0; i < size; i++)
-            {
-                content[i] = start + str.split(end, fatias[get])[0] + end;
-                get++;
-
-                texto = str.replace(content[i], key + String::toString(i) + key_, texto);
-                texto = texto;
-            }
-
-            content[get] = "NULL";
-
-            matrix[id] = content;
-
-            fatias = NULL;
-            content = NULL;
-
-            exist[id] = true;
-        }
-        else
-        {
-            exist[id] = false;
-        }
-
+        texto = str.removeAll('\n', texto);
+        texto = str.removeAll("\n\r", texto);
+        texto = str.removeAll("\r\n", texto);
+        texto = str.removeAll('\t', texto);
+        texto = str.removeAll("    ", texto);
+        texto = str.removeAll("  ", texto);
+        texto = str.removeAll("  ", texto);
         return texto;
     }
 
     string add_tags(int id, string key, string key_, string texto)
     {
-        int size = String::len(matrix[id]);
+        int size = str.len(matrix[id]);
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i <= size; i++)
         {
-            texto = str.replace(key + String::toString(i) + key_, matrix[id][i], texto);
+            texto = str.replace(key + str.toString(i) + key_, matrix[id][i], texto);
         }
 
         return texto;
     }
 
-    string spider(string texto)
+    string mapper(int id, string texto)
     {
+        string *fatias = str.split("\n", texto);
+        int size = str.len(fatias);
+        string *temp = new string[size + 2];
+        int start = 0;
+
+        bool virgula = false;
+        bool virgula_ = true;
+        bool add = true;
+
+        int counter = 0;
+        int pos = 0;
+
+        for (int i = 0; i < size; i++)
+        {
+            for (int x = 0; x < fatias[i].length(); x++)
+            {
+                if (virgula_)
+                {
+                    if ('"' == fatias[i][x])
+                    {
+                        if (add)
+                        {
+                            start = x;
+                        }
+
+                        add = false;
+                        counter++;
+
+                        temp[pos] = str.substr(start, x + 1, fatias[i]);
+
+                        start = x;
+
+                        if (counter > 1)
+                        {
+                            counter = 0;
+                            virgula = true;
+                            texto = str.replace(temp[pos], "{s{" + str.toString(pos) + "}s}", texto);
+                            pos++;
+                        }
+                        else
+                        {
+                            virgula = false;
+                        }
+                    }
+                }
+
+                if (virgula)
+                {
+                    if ('\'' == fatias[i][x])
+                    {
+                        if (add)
+                        {
+                            start = x;
+                        }
+
+                        add = false;
+                        counter++;
+
+                        temp[pos] = str.substr(start, x + 1, fatias[i]);
+
+                        start = x;
+
+                        if (counter > 1)
+                        {
+                            counter = 0;
+                            virgula_ = true;
+                            texto = str.replace(temp[pos], "{s{" + str.toString(pos) + "}s}", texto);
+                            pos++;
+                        }
+                        else
+                        {
+                            virgula_ = false;
+                        }
+
+                    }
+                }
+            }
+        }
+
+        temp[pos] = "NULL";
+        matrix[id] = temp;
+
         return texto;
     }
 
@@ -185,18 +202,30 @@ protected:
         return texto;
     }
 
-    string delete_tags(int id, string key, string key_, string texto)
+    string rm_mult_comments(string texto)
     {
-        int size = String::len(matrix[id]);
+        int start, ended;
+        string temp, comment;
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < texto.length(); i++)
         {
-            texto = str.remove(key + String::toString(i) + key_, texto);
+            comment = texto[i];
+            comment += texto[i + 1];
+
+            if ("/*" == comment)
+            {
+                start = i;
+            }
+
+            if ("*/" == comment)
+            {
+                temp = str.substr(start, i + 2, texto);
+                texto = str.remove(temp, texto);
+            }
         }
 
         return texto;
     }
-
 };
 
 }
