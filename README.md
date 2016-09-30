@@ -3,6 +3,9 @@
 A compressor written in C ++ for html, css and js.
 Also compress css and js in inline html.
 
+### Download package linux .deb
+
+[Download](https://github.com/SHENOISZ/mk-compress/blob/master/deb/mk-compress_1.0.0_all.deb)
 
 ### How to use
 
@@ -23,7 +26,3 @@ result: style.min.css
 
 result: init.min.js
 ```
-
-### Download package linux .deb
-
-[Download](https://github.com/SHENOISZ/mk-compress/blob/master/deb/mk-compress_1.0.0_all.deb)
