@@ -26,4 +26,4 @@ result: init.min.js
 
 ### Download package linux .deb
 
-[Download](https://github.com/SHENOISZ/mk-compress/deb/mk-compress_1.0.0_all.deb)
+[Download](https://github.com/SHENOISZ/mk-compress/blob/master/deb/mk-compress_1.0.0_all.deb)
