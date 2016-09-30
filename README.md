@@ -23,3 +23,7 @@ result: style.min.css
 
 result: init.min.js
 ```
+
+### Download package linux .deb
+
+<a href="https://github.com/SHENOISZ/mk-compress/deb/mk-compress_1.0.0_all.deb">Download</a>
