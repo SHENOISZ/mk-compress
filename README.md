@@ -7,19 +7,19 @@ Also compress css and js in inline html.
 ### How to use
 
 ```
-mk-compress index.html
+~$mk-compress index.html
 
 result: index.min.html
 ```
 
 ```
-mk-compress style.css
+~$mk-compress style.css
 
 result: style.min.css
 ```
 
 ```
-mk-compress init.js
+~$mk-compress init.js
 
 result: init.min.js
 ```
